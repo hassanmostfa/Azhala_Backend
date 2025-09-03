@@ -13,21 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(OtpSettingsSeeder::class);
-
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // Call AdminSeeder
         $this->call([
+            OtpSettingsSeeder::class,
             AdminSeeder::class,
             RegionSeeder::class,
             CitySeeder::class,
             SettingsSeeder::class,
+            UserTypesSeeder::class,
+            UsersSeeder::class,
+            UserBusinessInfoSeeder::class,
         ]);
     }
 }
