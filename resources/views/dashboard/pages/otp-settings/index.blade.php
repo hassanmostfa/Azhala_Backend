@@ -124,13 +124,6 @@
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 <!--end::Indicator progress-->
                             </button>
-                            
-                            <form action="{{ route('dashboard.otp-settings.reset') }}" method="post" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-secondary" onclick="return confirm('هل أنت متأكد من إعادة تعيين القيم الافتراضية؟')">
-                                    إعادة تعيين للقيم الافتراضية
-                                </button>
-                            </form>
                         </div>
                         <!--end::Submit-->
                     </form>

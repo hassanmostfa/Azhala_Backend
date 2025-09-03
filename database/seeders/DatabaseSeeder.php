@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-
         // Call AdminSeeder
         $this->call([
             AdminSeeder::class,
             RegionSeeder::class,
             CitySeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }
