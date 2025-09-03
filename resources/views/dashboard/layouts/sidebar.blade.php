@@ -3545,6 +3545,31 @@
                     <div class="menu-item pt-5">
                         <!--begin:Menu content-->
                         <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase fs-7">System</span>
+                        </div>
+                        <!--end:Menu content-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{ route('dashboard.otp-settings.index') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-shield-tick fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">إعدادات رمز التحقق</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item pt-5">
+                        <!--begin:Menu content-->
+                        <div class="menu-content">
                             <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
                         </div>
                         <!--end:Menu content-->
