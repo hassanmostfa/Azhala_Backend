@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         // Call AdminSeeder
         $this->call([
             AdminSeeder::class,
+            RegionSeeder::class,
+            CitySeeder::class,
         ]);
     }
 }
