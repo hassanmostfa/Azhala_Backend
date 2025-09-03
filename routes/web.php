@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\OtpSettingController;
 use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\Dashboard\SliderController;
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
@@ -20,5 +21,9 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     // Settings Routes
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Sliders Routes
+    Route::resource('sliders', SliderController::class);
+    Route::post('sliders/{id}/toggle-publish', [SliderController::class, 'togglePublish'])->name('sliders.toggle-publish');
 
 });

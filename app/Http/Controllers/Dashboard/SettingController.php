@@ -47,8 +47,8 @@ class SettingController extends Controller
             $logoFile = $request->file('logo');
             
             // Create a temporary model instance for the trait
-            $tempModel = new \App\Models\Setting();
-            $tempModel->id = 1; // Temporary ID for settings
+            $tempModel = new \App\Models\Admin();
+            $tempModel->id = 1; // Use Admin model with ID 1
             
             // Upload the logo
             $logoPath = $this->uploadSingleImage($logoFile, $tempModel, 'logo.png', 'images');

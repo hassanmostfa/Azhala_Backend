@@ -3545,7 +3545,7 @@
                     <div class="menu-item pt-5">
                         <!--begin:Menu content-->
                         <div class="menu-content">
-                            <span class="menu-heading fw-bold text-uppercase fs-7">System</span>
+                            <span class="menu-heading fw-bold text-uppercase fs-7">ادارة التطبيق</span>
                         </div>
                         <!--end:Menu content-->
                     </div>
@@ -3583,6 +3583,23 @@
                                 </i>
                             </span>
                             <span class="menu-title">إعدادات التطبيق</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{{ route('dashboard.sliders.index') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-abstract-13 fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">الاسلايدر</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
