@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
         $faker = Faker::create();
         $userTypeIds = UserType::pluck('id')->toArray();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             User::create([
                 'name' => $faker->name,
                 'phone_code' => '+966',
