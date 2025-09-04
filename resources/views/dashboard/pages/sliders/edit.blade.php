@@ -51,34 +51,49 @@
                     <div class="col-12 fv-row text-center">
                         <label class="fs-5 fw-semibold mb-2">الصورة</label>
                         <div class="text-center">
-                            <!-- Single Square for Preview and Change -->
-                            <div class="position-relative d-inline-block mb-2">
-                                <div id="image-preview" class="border rounded overflow-hidden cursor-pointer" style="width: 100px; height: 100px;">
-                                    <img id="preview-image" src="{{ $slider->image ? asset($slider->image) : '' }}" alt="Image Preview" class="w-100 h-100 object-fit-cover">
-                                    <!-- Overlay for click indication -->
-                                    <div id="image-overlay" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-white"
-                                         style="opacity: 0; transition: opacity 0.3s ease;">
-                                        <i class="ki-duotone ki-pencil fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </div>
+                            <style>
+                                .image-input-placeholder {
+                                    background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
+                                }
+
+                                [data-bs-theme="dark"] .image-input-placeholder {
+                                    background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                                }
+                            </style>
+                            <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                data-kt-image-input="true">
+                                <div class="image-input-wrapper w-150px h-150px"
+                                    @if ($slider->image) style="background-image: url('{{ asset($slider->image) }}')" @endif>
                                 </div>
+                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" title="تغيير الصورة">
+                                    <i class="ki-duotone ki-pencil fs-7">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                    <input type="file" name="image" accept=".png, .jpg, .jpeg" />
+                                    <input type="hidden" name="image_remove" />
+                                </label>
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="إلغاء الصورة">
+                                    <i class="ki-duotone ki-cross fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="حذف الصورة">
+                                    <i class="ki-duotone ki-cross fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
                             </div>
-
-                            <!-- Dimensions Text -->
-                            <div class="mb-3">
-                                <small class="form-text text-muted">الأبعاد الموصى بها: 1920×1080 بكسل. الحد الأقصى: 2 ميجابايت</small>
+                            <div class="text-muted fs-7">اختر صورة للسلايدر. يُسمح فقط بملفات *.png و *.jpg و *.jpeg. الأبعاد الموصى بها: 1920×1080 بكسل
                             </div>
-
-                            <!-- File Input - Hidden but functional -->
-                            <div>
-                                <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                       id="image" name="image" accept="image/*" onchange="previewImage(this)" style="display: none;">
-                                @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -118,41 +133,9 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function previewImage(input) {
-    const previewImage = document.getElementById('preview-image');
-    
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            previewImage.src = e.target.result;
-        }
-        
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-// Add click handlers for image selection
 document.addEventListener('DOMContentLoaded', function() {
-    const imagePreview = document.getElementById('image-preview');
-    const imageOverlay = document.getElementById('image-overlay');
-    const imageInput = document.getElementById('image');
-
-    // Show overlay on hover for preview
-    imagePreview.addEventListener('mouseenter', function() {
-        imageOverlay.style.opacity = '1';
-    });
-
-    imagePreview.addEventListener('mouseleave', function() {
-        imageOverlay.style.opacity = '0';
-    });
-
-    // Click to trigger file input
-    imagePreview.addEventListener('click', function() {
-        imageInput.click();
-    });
-
     // Form submission loading state
     const form = document.getElementById('kt_slider_form');
     const submitButton = document.getElementById('kt_slider_submit_button');
@@ -162,22 +145,26 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.setAttribute('data-kt-indicator', 'on');
         submitButton.disabled = true;
     });
+
+    // Show success message if exists
+    @if(session('success'))
+        Swal.fire({
+            title: 'تم بنجاح!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'موافق'
+        });
+    @endif
+
+    // Show error message if exists
+    @if(session('error'))
+        Swal.fire({
+            title: 'خطأ!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'موافق'
+        });
+    @endif
 });
 </script>
-
-<style>
-.object-fit-cover {
-    object-fit: cover;
-}
-
-#image-preview {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#image-preview:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-</style>
 @endsection

@@ -17,12 +17,12 @@ class SliderRepository implements SliderRepositoryInterface
 
     public function getAll(): Collection
     {
-        return $this->model->orderBy('created_at', 'desc')->get();
+        return $this->model->get();
     }
 
     public function getAllPaginated(int $perPage = 10)
     {
-        return $this->model->orderBy('created_at', 'desc')->paginate($perPage);
+        return $this->model->paginate($perPage);
     }
 
     public function getPublished(): Collection
@@ -35,15 +35,13 @@ class SliderRepository implements SliderRepositoryInterface
     public function getTrashed(): Collection
     {
         return $this->model->onlyTrashed()
-                          ->orderBy('deleted_at', 'desc')
                           ->get();
     }
 
     public function getTrashedPaginated(int $perPage = 10)
     {
         return $this->model->onlyTrashed()
-                          ->orderBy('deleted_at', 'desc')
-                          ->paginate($perPage);
+                        ->paginate($perPage);
     }
 
     public function findById(int $id): ?Slider
