@@ -74,7 +74,6 @@
                             <th class="text-start">نوع المستخدم</th>
                             <th class="text-start">كود الدولة</th>
                             <th class="text-start">رقم الهاتف</th>
-                            <th class="text-start">عنوان المستخدم</th>
                             <th class="text-start">تاريخ الانضمام</th>
                             <th class="text-start">حالة المستخدم</th>
                             <th class="text-end min-w-70px">العمليات</th>
@@ -124,14 +123,7 @@
                                         </a>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="ms-5">
-                                        <a href="{{ route('dashboard.users.edit', $user->id) }}"
-                                            class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">
-                                            {{ $user->address ?? 'غير محدد' }}
-                                        </a>
-                                    </div>
-                                </td>
+
                                 <td>
                                     <div class="ms-5">
                                         <a href="{{ route('dashboard.users.edit', $user->id) }}"
@@ -207,21 +199,7 @@
                     e.preventDefault();
                     const userId = $(this).data('user-id');
                     const actionUrl = $(this).data('action');
-
-                    Swal.fire({
-                        text: "هل أنت متأكد من حذف هذا المستخدم؟",
-                        icon: "warning",
-                        showCancelButton: true,
-                        buttonsStyling: false,
-                        confirmButtonText: "نعم، احذف!",
-                        cancelButtonText: "لا، إلغاء",
-                        customClass: {
-                            confirmButton: "btn btn-primary",
-                            cancelButton: "btn btn-active-light"
-                        }
-                    }).then(function(result) {
-                        if (result.isConfirmed) {
-                            $.ajax({
+                    $.ajax({
                                 url: actionUrl,
                                 type: 'DELETE',
                                 headers: {
@@ -254,8 +232,6 @@
                                     });
                                 }
                             });
-                        }
-                    });
                 });
             });
         </script>

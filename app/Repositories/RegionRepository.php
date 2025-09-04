@@ -19,4 +19,13 @@ class RegionRepository implements RegionRepositoryInterface
         $region->is_active = $isActive;
         return $region->save();
     }
+
+    public function toggleAllRegionsStatus(bool $isActive): bool
+{
+    return Region::query()->update(['is_active' => $isActive]) > 0;
+}
+public function toggleSelectedRegionsStatus(array $regionIds, bool $isActive): bool
+{
+    return Region::whereIn('id', $regionIds)->update(['is_active' => $isActive]) > 0;
+}
 }

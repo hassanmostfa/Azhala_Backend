@@ -19,4 +19,14 @@ class CityRepository implements CityRepositoryInterface
         $city->is_active = $isActive;
         return $city->save();
     }
+
+    public function toggleAllCitiesStatus(int $regionId, bool $isActive): bool
+{
+    return City::where('region_id', $regionId)->update(['is_active' => $isActive]) > 0;
+}
+
+public function toggleSelectedCitiesStatus(array $cityIds, bool $isActive): bool
+{
+    return City::whereIn('id', $cityIds)->update(['is_active' => $isActive]) > 0;
+}
 }

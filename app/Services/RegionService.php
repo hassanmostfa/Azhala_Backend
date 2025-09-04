@@ -38,4 +38,22 @@ class RegionService
     {
         return $this->regionRepository->toggleRegionStatus($regionId, $isActive);
     }
+
+    public function toggleAllRegionsStatus(bool $isActive): bool
+{
+    return $this->regionRepository->toggleAllRegionsStatus($isActive);
+}
+
+public function toggleAllCitiesStatus(int $regionId, bool $isActive): bool
+{
+    return $this->cityRepository->toggleAllCitiesStatus($regionId, $isActive);
+}
+public function toggleSelectedRegionsStatus(array $regionIds, bool $isActive): bool
+{
+    return $this->regionRepository->toggleSelectedRegionsStatus($regionIds, $isActive);
+}
+public function toggleSelectedCitiesStatus(array $cityIds, bool $isActive): bool
+{
+    return $this->cityRepository->toggleSelectedCitiesStatus($cityIds, $isActive);
+}
 }

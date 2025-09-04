@@ -20,7 +20,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
     Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
-    
+
     Route::resource('users', UserController::class)->names([
         'index' => 'users.index',
         'create' => 'users.create',
@@ -62,4 +62,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/regions/{regionId}/cities', [RegionController::class, 'getCities'])->name('regions.cities');
     Route::post('/regions/{regionId}/toggle', [RegionController::class, 'toggleRegionStatus'])->name('regions.toggle');
     Route::post('/cities/{cityId}/toggle', [RegionController::class, 'toggleCityStatus'])->name('cities.toggle');
+    Route::post('/regions/toggle-all', [RegionController::class, 'toggleAllRegionsStatus'])->name('regions.toggle-all');
+    Route::post('/cities/toggle-all/{regionId}', [RegionController::class, 'toggleAllCitiesStatus'])->name('cities.toggle-all');
+    Route::post('/regions/toggle-selected', [RegionController::class, 'toggleSelectedRegionsStatus'])->name('regions.toggle-selected');
+    Route::post('/cities/toggle-selected', [RegionController::class, 'toggleSelectedCitiesStatus'])->name('cities.toggle-selected');
 });

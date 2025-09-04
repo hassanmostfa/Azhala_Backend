@@ -15,7 +15,7 @@ class UserTypesSeeder extends Seeder
     public function run(): void
     {
         $userTypes = [
-            ['name' => 'عامل', 'type' => 'customer'],
+            ['name' => 'عميل', 'type' => 'customer'],
             ['name' => 'مطعم', 'type' => 'restaurant'],
             ['name' => 'محل حلوى', 'type' => 'candy_store'],
             ['name' => 'صباب', 'type' => 'pourivy'],
