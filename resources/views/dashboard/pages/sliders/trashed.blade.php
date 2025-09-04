@@ -18,7 +18,7 @@
                     <span class="bullet bg-gray-400 w-5px h-2px"></span>
                 </li>
                 <li class="breadcrumb-item text-muted">
-                    <a href="{{ route('dashboard.sliders.index') }}" class="text-muted text-hover-primary">سلايدر</a>
+                    <a href="{{ route('dashboard.sliders.index') }}" class="text-muted text-hover-primary">بنر</a>
                 </li>
                 <li class="breadcrumb-item">
                     <span class="bullet bg-gray-400 w-5px h-2px"></span>
@@ -149,9 +149,9 @@
                         </span>
                     </div>
                     <h3 class="text-dark fw-bold mb-2">سلة المحذوفات فارغة</h3>
-                    <p class="text-muted fs-6">لا توجد سلايدرات محذوفة في الوقت الحالي.</p>
+                                         <p class="text-muted fs-6">لا توجد بنرات محذوفة في الوقت الحالي.</p>
                     <a href="{{ route('dashboard.sliders.index') }}" class="btn btn-primary mt-3">
-                        العودة للسلايدر
+                        العودة للبنرات 
                     </a>
                 </div>
             @endif
@@ -171,9 +171,9 @@
             $('.restore-slider-btn').on('click', function() {
                 const sliderId = $(this).data('slider-id');
                 
-                Swal.fire({
-                    title: 'استعادة السلايدر؟',
-                    text: 'سيتم استعادة السلايدر إلى قائمة السلايدرات النشطة',
+                                 Swal.fire({
+                     title: 'استعادة البنر؟',
+                     text: 'سيتم استعادة البنر إلى قائمة البنرات النشطة',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#28a745',
@@ -192,9 +192,9 @@
             $('.force-delete-slider-btn').on('click', function() {
                 const sliderId = $(this).data('slider-id');
                 
-                Swal.fire({
-                    title: 'حذف نهائي؟',
-                    text: 'هذا الإجراء لا يمكن التراجع عنه! سيتم حذف السلايدر نهائياً',
+                                 Swal.fire({
+                     title: 'حذف نهائي؟',
+                     text: 'هذا الإجراء لا يمكن التراجع عنه! سيتم حذف البنر نهائياً',
                     icon: 'error',
                     showCancelButton: true,
                     confirmButtonColor: '#dc3545',
@@ -211,21 +211,41 @@
 
             // Show success message if exists
             @if(session('success'))
-                Swal.fire({
-                    title: 'تم بنجاح!',
-                    text: '{{ session('success') }}',
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                
+                Toast.fire({
                     icon: 'success',
-                    confirmButtonText: 'موافق'
+                    title: '{{ session('success') }}'
                 });
             @endif
 
             // Show error message if exists
             @if(session('error'))
-                Swal.fire({
-                    title: 'خطأ!',
-                    text: '{{ session('error') }}',
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                
+                Toast.fire({
                     icon: 'error',
-                    confirmButtonText: 'موافق'
+                    title: '{{ session('error') }}'
                 });
             @endif
         });

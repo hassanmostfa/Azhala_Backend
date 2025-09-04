@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'تعديل سلايدر')
+@section('title', 'تعديل بنر')
 
 @section('content')
 <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
     <div id="kt_app_toolbar_container" class="app-container container-l d-flex flex-stack">
         <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">تعديل سلايدر</h1>
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">تعديل بنر</h1>
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                 <li class="breadcrumb-item text-muted">
                     <a href="{{ route('dashboard.index') }}" class="text-muted text-hover-primary">الرئيسية</a>
@@ -15,12 +15,12 @@
                     <span class="bullet bg-gray-400 w-5px h-2px"></span>
                 </li>
                 <li class="breadcrumb-item text-muted">
-                    <a href="{{ route('dashboard.sliders.index') }}" class="text-muted text-hover-primary">سلايدر</a>
+                    <a href="{{ route('dashboard.sliders.index') }}" class="text-muted text-hover-primary">بنر</a>
                 </li>
                 <li class="breadcrumb-item">
                     <span class="bullet bg-gray-400 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-muted">تعديل سلايدر</li>
+                <li class="breadcrumb-item text-muted">تعديل بنر</li>
             </ul>
         </div>
     </div>
@@ -29,7 +29,7 @@
 <div id="kt_app_content_container" class="app-container container-l">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">تعديل السلايدر</h3>
+            <h3 class="card-title">تعديل البنر</h3>
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -89,7 +89,7 @@
                                     </i>
                                 </span>
                             </div>
-                            <div class="text-muted fs-7">اختر صورة للسلايدر. يُسمح فقط بملفات *.png و *.jpg و *.jpeg. الأبعاد الموصى بها: 1920×1080 بكسل
+                            <div class="text-muted fs-7">اختر صورة للبنر. يُسمح فقط بملفات *.png و *.jpg و *.jpeg. الأبعاد الموصى بها: 1920×1080 بكسل
                             </div>
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -106,10 +106,10 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="is_published" name="is_published" value="1" {{ $slider->is_published ? 'checked' : '' }}>
                             <label class="form-check-label" for="is_published">
-                                نشر السلايدر
+                                نشر البنر
                             </label>
                         </div>
-                        <small class="form-text text-muted">عند تفعيل هذا الخيار، سيظهر السلايدر في الموقع</small>
+                        <small class="form-text text-muted">عند تفعيل هذا الخيار، سيظهر البنر في الموقع</small>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -118,7 +118,7 @@
                 <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-primary" id="kt_slider_submit_button">
                         <!--begin::Indicator label-->
-                        <span class="indicator-label">تحديث السلايدر</span>
+                        <span class="indicator-label">تحديث البنر</span>
                         <!--end::Indicator label-->
                         <!--begin::Indicator progress-->
                         <span class="indicator-progress">يرجى الانتظار...
@@ -133,7 +133,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Form submission loading state
@@ -148,21 +148,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show success message if exists
     @if(session('success'))
-        Swal.fire({
-            title: 'تم بنجاح!',
-            text: '{{ session('success') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'success',
-            confirmButtonText: 'موافق'
+            title: '{{ session('success') }}'
         });
     @endif
 
     // Show error message if exists
     @if(session('error'))
-        Swal.fire({
-            title: 'خطأ!',
-            text: '{{ session('error') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'error',
-            confirmButtonText: 'موافق'
+            title: '{{ session('error') }}'
         });
     @endif
 });

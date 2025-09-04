@@ -11,16 +11,6 @@
                     <h3 class="card-title">إعدادات التطبيق</h3>
                 </div>
                 <div class="card-body">
-                    @if($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
                     <!--begin::Form-->
                     <form action="{{ route('dashboard.settings.update') }}" class="form mb-15" method="post" enctype="multipart/form-data" id="kt_settings_form" dir="rtl">
                         @csrf
@@ -68,16 +58,16 @@
                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                             data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="حذف اللوجو">
                                             <i class="ki-duotone ki-cross fs-2">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
                                         </span>
-                                    </div>
+                                            </div>
                                     <div class="text-muted fs-7">اختر لوجو للتطبيق. يُسمح فقط بملفات *.png و *.jpg و *.jpeg
                                     </div>
-                                    @error('logo')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                        @error('logo')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <!--end::Logo Upload-->
                             </div>
@@ -335,25 +325,70 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show success message if exists
     @if(session('success'))
-        Swal.fire({
-            title: 'تم بنجاح!',
-            text: '{{ session('success') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'success',
-            confirmButtonText: 'موافق'
+            title: '{{ session('success') }}'
         });
     @endif
 
     // Show error message if exists
     @if(session('error'))
-        Swal.fire({
-            title: 'خطأ!',
-            text: '{{ session('error') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'error',
-            confirmButtonText: 'موافق'
+            title: '{{ session('error') }}'
         });
     @endif
 });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+/* Danger border styling for inputs with errors */
+.form-control.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.form-control.is-invalid:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Textarea danger border */
+textarea.form-control.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Image input danger border */
+.image-input.is-invalid .image-input-wrapper {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+</style>
 @endsection
