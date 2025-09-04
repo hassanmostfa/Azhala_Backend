@@ -20,6 +20,11 @@ class SliderRepository implements SliderRepositoryInterface
         return $this->model->orderBy('created_at', 'desc')->get();
     }
 
+    public function getAllPaginated(int $perPage = 10)
+    {
+        return $this->model->orderBy('created_at', 'desc')->paginate($perPage);
+    }
+
     public function getPublished(): Collection
     {
         return $this->model->where('is_published', true)
@@ -32,6 +37,13 @@ class SliderRepository implements SliderRepositoryInterface
         return $this->model->onlyTrashed()
                           ->orderBy('deleted_at', 'desc')
                           ->get();
+    }
+
+    public function getTrashedPaginated(int $perPage = 10)
+    {
+        return $this->model->onlyTrashed()
+                          ->orderBy('deleted_at', 'desc')
+                          ->paginate($perPage);
     }
 
     public function findById(int $id): ?Slider

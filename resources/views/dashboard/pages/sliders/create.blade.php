@@ -50,9 +50,9 @@
                     <div class="col-12 fv-row text-center">
                         <label class="fs-5 fw-semibold mb-2">الصورة</label>
                         <div class="text-center">
-                            <!-- Single Square for Preview and Change -->
-                            <div class="position-relative d-inline-block mb-2">
-                                <div id="image-preview" class="border rounded overflow-hidden cursor-pointer" style="width: 100px; height: 100px;">
+                            <!-- Image Preview (Hidden Initially) -->
+                            <div id="image-preview-container" class="position-relative d-inline-block mb-2" style="display: none;">
+                                <div id="image-preview" class="border rounded overflow-hidden cursor-pointer" style="width: 150px; height: 150px;">
                                     <img id="preview-image" src="" alt="Image Preview" class="w-100 h-100 object-fit-cover">
                                     <!-- Overlay for click indication -->
                                     <div id="image-overlay" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-white"
@@ -65,6 +65,18 @@
                                 </div>
                             </div>
 
+                            <!-- Upload Button (Visible Initially) -->
+                            <div id="upload-button-container" class="mb-3">
+                                <button type="button" class="btn btn-light-primary" onclick="document.getElementById('image').click()">
+                                    <i class="ki-duotone ki-plus fs-2 me-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                    اختيار صورة
+                                </button>
+                            </div>
+
                             <!-- Dimensions Text -->
                             <div class="mb-3">
                                 <small class="form-text text-muted">الأبعاد الموصى بها: 1920×1080 بكسل. الحد الأقصى: 2 ميجابايت</small>
@@ -73,7 +85,7 @@
                             <!-- File Input - Hidden but functional -->
                             <div>
                                 <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                       id="image" name="image" accept="image/*" onchange="previewImage(this)" style="display: none;">
+                                       id="image" name="image" accept="image/*" onchange="previewImage(this)" style="display: none;" required>
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -120,12 +132,17 @@
 <script>
 function previewImage(input) {
     const previewImage = document.getElementById('preview-image');
+    const previewContainer = document.getElementById('image-preview-container');
+    const uploadButtonContainer = document.getElementById('upload-button-container');
     
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         
         reader.onload = function(e) {
             previewImage.src = e.target.result;
+            // Show preview and hide upload button
+            previewContainer.style.display = 'inline-block';
+            uploadButtonContainer.style.display = 'none';
         }
         
         reader.readAsDataURL(input.files[0]);
@@ -138,9 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageOverlay = document.getElementById('image-overlay');
     const imageInput = document.getElementById('image');
 
-    // Show overlay on hover for preview
+    // Show overlay on hover for preview (only when preview is visible)
     imagePreview.addEventListener('mouseenter', function() {
-        imageOverlay.style.opacity = '1';
+        if (document.getElementById('image-preview-container').style.display !== 'none') {
+            imageOverlay.style.opacity = '1';
+        }
     });
 
     imagePreview.addEventListener('mouseleave', function() {
