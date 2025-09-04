@@ -5,11 +5,11 @@
         <!--begin::Page bg image-->
         <style>
             body {
-                background-image: url('assets/media/auth/bg1.jpg');
+                background-image: url('assets/media/auth/bg7.jpg');
             }
 
             [data-bs-theme="dark"] body {
-                background-image: url('assets/media/auth/bg1-dark.jpg');
+                background-image: url('assets/media/auth/bg7-dark.jpg');
             }
         </style>
         <!--end::Page bg image-->
@@ -21,16 +21,16 @@
                 <div class="card card-flush w-lg-650px py-5">
                     <div class="card-body py-15 py-lg-20">
                         <!--begin::Title-->
-                        <h1 class="fw-bolder fs-2hx text-gray-900 mb-4">Oops!</h1>
+                        <h1 class="fw-bolder fs-2qx text-gray-900 mb-4">System Error</h1>
                         <!--end::Title-->
                         <!--begin::Text-->
-                        <div class="fw-semibold fs-6 text-gray-500 mb-7">We can't find that page.</div>
+                        <div class="fw-semibold fs-6 text-gray-500 mb-7">Something went wrong! Please try again later.</div>
                         <!--end::Text-->
                         <!--begin::Illustration-->
-                        <div class="mb-3">
-                            <img src="assets/media/auth/404-error.png" class="mw-100 mh-300px theme-light-show"
+                        <div class="mb-11">
+                            <img src="assets/media/auth/500-error.png" class="mw-100 mh-300px theme-light-show"
                                 alt="" />
-                            <img src="assets/media/auth/404-error-dark.png" class="mw-100 mh-300px theme-dark-show"
+                            <img src="assets/media/auth/500-error-dark.png" class="mw-100 mh-300px theme-dark-show"
                                 alt="" />
                         </div>
                         <!--end::Illustration-->
