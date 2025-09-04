@@ -171,9 +171,6 @@
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                                 },
-                                data: {
-                                    _method: 'PATCH'
-                                },
                                 success: function(response) {
                                     Swal.fire({
                                         text: response.message,
