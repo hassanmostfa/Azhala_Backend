@@ -125,10 +125,10 @@
                             
 
                                     <div class="menu-item px-3">
-                                        <form action="{{ route('dashboard.sliders.destroy', $slider->id) }}" method="POST" style="display: inline;">
+                                        <form id="delete-form-{{ $slider->id }}" action="{{ route('dashboard.sliders.destroy', $slider->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="menu-link px-3" style="background: none; border: none; width: 100%; text-align: start; color: inherit;" onclick="return confirm('هل أنت متأكد من حذف هذا السلايدر؟')">
+                                            <button type="button" class="menu-link px-3 delete-slider-btn" style="background: none; border: none; width: 100%; text-align: start; color: inherit;" data-slider-id="{{ $slider->id }}">
                                                 <i class="ki-duotone ki-trash fs-2 me-2">
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
@@ -166,25 +166,57 @@
 
 
 
-@push('scripts')
+@push('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const table = $('#kt_ecommerce_category_table').DataTable({
-            "language": {
-                "url": "{{ asset('assets/js/datatables-ar.json') }}"
-            },
-            "searching": true,
-            "paging": false,
-            "info": false,
-            "lengthChange": false,
-            "ordering": true,
-            "columnDefs": [
-                { "orderable": false, "targets": 3 } // Disable sorting on actions column
-            ]
+        // Simple table without DataTables to avoid conflicts
+        // Using server-side pagination instead
+
+        // SweetAlert2 for delete confirmation
+        $('.delete-slider-btn').on('click', function() {
+            const sliderId = $(this).data('slider-id');
+            
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: 'سيتم نقل السلايدر إلى سلة المحذوفات',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + sliderId).submit();
+                }
+            });
         });
+
+        // Show success message if exists
+        @if(session('success'))
+            Swal.fire({
+                title: 'تم بنجاح!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'موافق'
+            });
+        @endif
+
+        // Show error message if exists
+        @if(session('error'))
+            Swal.fire({
+                title: 'خطأ!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'موافق'
+            });
+        @endif
     });
 </script>
 @endpush
+
 @endsection
 @push('js')
 <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
