@@ -179,7 +179,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const table = $('#kt_ecommerce_category_table').DataTable({
                     "searching": true,
-                    "paging": false,
+                    "paging": true,
                     "info": false,
                     "columnDefs": [{
                             "orderable": false,

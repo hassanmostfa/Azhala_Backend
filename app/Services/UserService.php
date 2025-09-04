@@ -96,9 +96,28 @@ class UserService
     public function deleteUser($id)
     {
         $user = $this->userRepository->getUserById($id);
-        if ($user->photo) {
-            $this->deleteImage($user->photo);
-        }
         return $this->userRepository->deleteUser($id);
     }
+
+    public function getTrashedUsers()
+    {
+        return $this->userRepository->getTrashedUsers();
+    }
+
+    public function restoreUser($id)
+    {
+        return $this->userRepository->restoreUser($id);
+    }
+
+    public function forceDeleteUser($id)
+{
+    $user = $this->userRepository->getTrashedUserById($id);
+    if ($user->photo) {
+        $this->deleteImage($user->photo);
+    }
+    if ($user->businessInfo) {
+        $user->businessInfo->delete();
+    }
+    return $this->userRepository->forceDeleteUser($id);
+}
 }

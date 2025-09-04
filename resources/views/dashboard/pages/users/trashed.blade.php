@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-    @push('scripts')
+    @push('js')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const table = $('#kt_ecommerce_category_table').DataTable({
@@ -266,7 +266,6 @@
 @endsection
 @push('js')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/categories.js') }}"></script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
