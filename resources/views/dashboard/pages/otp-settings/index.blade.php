@@ -46,7 +46,7 @@
                             <!--begin::Col-->
                             <div class="col-md-6 fv-row">
                                 <!--begin::Label-->
-                                <label class="fs-5 fw-semibold mb-2">وقت انتهاء الصلاحية (بالدقائق)</label>
+                                <label class="fs-5 fw-semibold mb-2">وقت انتهاء الصلاحية (بالدقائق) <span class="text-muted fs-7">(من1 الي 10 دقائق)</span></label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="number" 
@@ -136,21 +136,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show success message if exists
     @if(session('success'))
-        Swal.fire({
-            title: 'تم بنجاح!',
-            text: '{{ session('success') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'success',
-            confirmButtonText: 'موافق'
+            title: '{{ session('success') }}'
         });
     @endif
 
     // Show error message if exists
     @if(session('error'))
-        Swal.fire({
-            title: 'خطأ!',
-            text: '{{ session('error') }}',
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        
+        Toast.fire({
             icon: 'error',
-            confirmButtonText: 'موافق'
+            title: '{{ session('error') }}'
         });
     @endif
 });
