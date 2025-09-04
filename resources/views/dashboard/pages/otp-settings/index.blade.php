@@ -9,18 +9,6 @@
                     <h3 class="card-title">إعدادات رمز التحقق</h3>
                 </div>
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
@@ -134,6 +122,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('kt_otp_settings_form');
@@ -144,6 +133,26 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.setAttribute('data-kt-indicator', 'on');
         submitButton.disabled = true;
     });
+
+    // Show success message if exists
+    @if(session('success'))
+        Swal.fire({
+            title: 'تم بنجاح!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'موافق'
+        });
+    @endif
+
+    // Show error message if exists
+    @if(session('error'))
+        Swal.fire({
+            title: 'خطأ!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'موافق'
+        });
+    @endif
 });
 </script>
 @endsection

@@ -11,18 +11,6 @@
                     <h3 class="card-title">إعدادات التطبيق</h3>
                 </div>
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
@@ -47,35 +35,49 @@
                                 <!--end::Label-->
                                 <!--begin::Logo Upload-->
                                 <div class="text-center">
-                                    <!-- Single Square for Preview and Change -->
-                                    <div class="position-relative d-inline-block mb-2">
-                                        <div id="logo-preview" class="border rounded overflow-hidden cursor-pointer" style="width: 100px; height: 100px;">
-                                            <img id="preview-image" src="{{ !empty($settingsArray['logo']) ? asset($settingsArray['logo']) : '' }}" 
-                                                 alt="Logo Preview" class="w-100 h-100 object-fit-cover">
-                                            <!-- Overlay for click indication -->
-                                            <div id="logo-overlay" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-white" 
-                                                 style="opacity: 0; transition: opacity 0.3s ease;">
-                                                <i class="ki-duotone ki-pencil fs-2">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </div>
+                                    <style>
+                                        .image-input-placeholder {
+                                            background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
+                                        }
+
+                                        [data-bs-theme="dark"] .image-input-placeholder {
+                                            background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                                        }
+                                    </style>
+                                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                        data-kt-image-input="true">
+                                        <div class="image-input-wrapper w-150px h-150px"
+                                            @if (!empty($settingsArray['logo'])) style="background-image: url('{{ asset($settingsArray['logo']) }}')" @endif>
                                         </div>
+                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="change" data-bs-toggle="tooltip" title="تغيير اللوجو">
+                                            <i class="ki-duotone ki-pencil fs-7">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            <input type="file" name="logo" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="logo_remove" />
+                                        </label>
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="إلغاء اللوجو">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="حذف اللوجو">
+                                            <i class="ki-duotone ki-cross fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
                                     </div>
-                                    
-                                    <!-- Dimensions Text -->
-                                    <div class="mb-3">
-                                        <small class="form-text text-muted">الأبعاد الموصى بها: 200×200 بكسل. الحد الأقصى: 2 ميجابايت</small>
+                                    <div class="text-muted fs-7">اختر لوجو للتطبيق. يُسمح فقط بملفات *.png و *.jpg و *.jpeg
                                     </div>
-                                    
-                                    <!-- File Input - Hidden but functional -->
-                                    <div>
-                                        <input type="file" class="form-control @error('logo') is-invalid @enderror" 
-                                               id="logo" name="logo" accept="image/*" onchange="previewLogo(this)" style="display: none;">
-                                        @error('logo')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                    @error('logo')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!--end::Logo Upload-->
                             </div>
@@ -300,20 +302,6 @@
 </div>
 
 <script>
-function previewLogo(input) {
-    const previewImage = document.getElementById('preview-image');
-    
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            previewImage.src = e.target.result;
-        }
-        
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
 function validatePhone(input) {
     let value = input.value;
     // Remove any non-digit characters
@@ -333,25 +321,7 @@ function validatePhone(input) {
     }
 }
 
-// Add click handler to make the preview clickable to trigger file input
 document.addEventListener('DOMContentLoaded', function() {
-    const logoPreview = document.getElementById('logo-preview');
-    const logoOverlay = document.getElementById('logo-overlay');
-    const logoInput = document.getElementById('logo');
-
-    // Show overlay on hover
-    logoPreview.addEventListener('mouseenter', function() {
-        logoOverlay.style.opacity = '1';
-    });
-
-    logoPreview.addEventListener('mouseleave', function() {
-        logoOverlay.style.opacity = '0';
-    });
-
-    // Click to trigger file input
-    logoPreview.addEventListener('click', function() {
-        logoInput.click();
-    });
 
     // Form submission loading state
     const form = document.getElementById('kt_settings_form');
@@ -362,22 +332,28 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.setAttribute('data-kt-indicator', 'on');
         submitButton.disabled = true;
     });
+
+    // Show success message if exists
+    @if(session('success'))
+        Swal.fire({
+            title: 'تم بنجاح!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'موافق'
+        });
+    @endif
+
+    // Show error message if exists
+    @if(session('error'))
+        Swal.fire({
+            title: 'خطأ!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'موافق'
+        });
+    @endif
 });
 </script>
 
-<style>
-.object-fit-cover {
-    object-fit: cover;
-}
-
-#logo-preview {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#logo-preview:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
