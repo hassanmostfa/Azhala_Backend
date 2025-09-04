@@ -72,6 +72,7 @@
                         <tr class="text-gray-400 fw-bold">
                             <th class="text-start">اسم المستخدم</th>
                             <th class="text-start">نوع المستخدم</th>
+                            <th class="text-start">كود الدولة</th>
                             <th class="text-start">رقم الهاتف</th>
                             <th class="text-start">عنوان المستخدم</th>
                             <th class="text-start">تاريخ الانضمام</th>
@@ -111,7 +112,15 @@
                                     <div class="ms-5">
                                         <a href="{{ route('dashboard.users.edit', $user->id) }}"
                                             class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" dir="ltr">
-                                            {{ $user->phone_code . ' ' . $user->phone }}
+                                            {{ $user->phone_code }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ms-5">
+                                        <a href="{{ route('dashboard.users.edit', $user->id) }}"
+                                            class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" dir="ltr">
+                                            {{ $user->phone }}
                                         </a>
                                     </div>
                                 </td>
@@ -229,7 +238,7 @@
                                         }
                                     }).then(function() {
                                         table.row($(e.target).closest('tr'))
-                                        .remove().draw();
+                                            .remove().draw();
                                     });
                                 },
                                 error: function(xhr) {
@@ -262,4 +271,3 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 @endpush
-
