@@ -60,12 +60,13 @@ class UserRequest extends FormRequest
 
         if ($this->isMethod('PATCH') || $this->isMethod('PUT')) {
             $rules['name'] = 'sometimes|required|string|max:255|regex:/^[\p{L}\s]+$/u';
+            $rules['phone_code'] = 'sometimes|required|string|regex:/^\+[0-9]{1,4}$/';
             $rules['phone'] = [
                 'sometimes',
                 'required',
                 'string',
                 'regex:/^5[0-9]{8}$/',
-                'unique:users,phone,' . $userId . ',id,phone_code,' . $this->phone_code,
+                'unique:users,phone,' . $userId . ',id,phone_code,' . ($this->phone_code ?? 'deleted_at,NULL')
             ];
             $rules['user_type_id'] = 'sometimes|required|exists:user_types,id';
         }

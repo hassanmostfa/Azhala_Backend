@@ -64,7 +64,7 @@ class UserController extends Controller
 
      public function trashed(): View
     {
-        $users = User::onlyTrashed()->with(['userType', 'businessInfo'])->get();
+        $users = $this->userService->getTrashedUsers();
         return view('dashboard.pages.users.trashed', compact('users'));
     }
 
@@ -90,14 +90,12 @@ class UserController extends Controller
     }
 
     public function forceDelete($id)
-    {
-        try {
-            $user = User::onlyTrashed()->findOrFail($id);
-            $this->userService->deleteUser($id);
-            $user->forceDelete();
-            return response()->json(['message' => 'تم حذف المستخدم نهائيًا بنجاح'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'فشل في الحذف النهائي للمستخدم: ' . $e->getMessage()], 400);
-        }
+{
+    try {
+        $this->userService->forceDeleteUser($id);
+        return response()->json(['message' => 'تم حذف المستخدم نهائيًا بنجاح'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'فشل في الحذف النهائي للمستخدم: ' . $e->getMessage()], 400);
     }
+}
 }

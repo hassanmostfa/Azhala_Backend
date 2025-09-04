@@ -29,7 +29,12 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUserById($id): ?User
     {
-        return $this->model->with(['userType', 'businessInfo'])->findOrFail($id);
+        return $this->model->with(['userType', 'businessInfo'])->find($id);
+    }
+
+    public function getTrashedUserById($id)
+    {
+        return $this->model->onlyTrashed()->with(['userType', 'businessInfo'])->find($id);
     }
 
     public function createUser(array $data): User
@@ -49,4 +54,22 @@ class UserRepository implements UserRepositoryInterface
         $user = $this->model->findOrFail($id);
         return $user->delete();
     }
+
+    public function getTrashedUsers()
+    {
+        return $this->model->onlyTrashed()->with(['userType', 'businessInfo'])->get();
+    }
+
+    public function restoreUser($id)
+    {
+        $user = $this->model->onlyTrashed()->findOrFail($id);
+        $user->restore();
+        return $user;
+    }
+
+    public function forceDeleteUser($id)
+{
+    $user = $this->model->onlyTrashed()->find($id);
+    return $user->forceDelete();
+}
 }
