@@ -24,7 +24,7 @@ class SliderController extends Controller
     */
    public function index()
    {
-      $sliders = $this->sliderRepository->getAll();
+      $sliders = $this->sliderRepository->getAllPaginated(10);
       return view('dashboard.pages.sliders.index', compact('sliders'));
    }
 
@@ -126,26 +126,29 @@ class SliderController extends Controller
    }
 
    /**
-    * Remove the specified slider
+    * Remove the specified slider (soft delete - move to trash)
     */
    public function destroy($id)
    {
-      $slider = $this->sliderRepository->findById($id);
+      $slider = $this->sliderRepository->findById((int) $id);
       
       if (!$slider) {
          return redirect()->route('dashboard.sliders.index')
-               ->with('error', 'الصورة غير موجودة');
+               ->with('error', 'السلايدر غير موجود');
       }
 
-      // Delete image file if exists
-      if ($slider->image) {
-         $this->deleteImage(str_replace('/storage/', '', $slider->image));
-      }
+      // Don't delete image file on soft delete, only on force delete
+      // The image should remain so it can be restored later
 
-      $this->sliderRepository->delete($id);
+      $result = $this->sliderRepository->delete((int) $id);
+      
+      if ($result) {
+         return redirect()->route('dashboard.sliders.index')
+               ->with('success', 'تم نقل السلايدر إلى سلة المحذوفات بنجاح');
+      }
 
       return redirect()->route('dashboard.sliders.index')
-         ->with('success', 'تم حذف الصورة بنجاح');
+         ->with('error', 'حدث خطأ أثناء نقل السلايدر إلى سلة المحذوفات');
    }
 
    /**
@@ -153,15 +156,29 @@ class SliderController extends Controller
     */
    public function togglePublish($id)
    {
-      $result = $this->sliderRepository->togglePublish($id);
+      $slider = $this->sliderRepository->findById((int) $id);
       
-      if ($result) {
-         return redirect()->route('dashboard.sliders.index')
-               ->with('success', 'تم تغيير حالة النشر بنجاح');
+      if (!$slider) {
+         return response()->json([
+            'success' => false,
+            'message' => 'السلايدر غير موجود'
+         ], 404);
       }
 
-      return redirect()->route('dashboard.sliders.index')
-         ->with('error', 'حدث خطأ أثناء تغيير حالة النشر');
+      $result = $this->sliderRepository->togglePublish((int) $id);
+      
+      if ($result) {
+         return response()->json([
+            'success' => true,
+            'message' => 'تم تغيير حالة النشر بنجاح',
+            'is_published' => $slider->fresh()->is_published
+         ]);
+      }
+
+      return response()->json([
+         'success' => false,
+         'message' => 'حدث خطأ أثناء تغيير حالة النشر'
+      ], 500);
    }
 
    /**
@@ -169,7 +186,7 @@ class SliderController extends Controller
     */
    public function show($id)
    {
-      $slider = $this->sliderRepository->findById($id);
+      $slider = $this->sliderRepository->findById((int) $id);
       
       if (!$slider) {
          return redirect()->route('dashboard.sliders.index')
@@ -184,7 +201,7 @@ class SliderController extends Controller
     */
    public function trashed()
    {
-      $sliders = $this->sliderRepository->getTrashed();
+      $sliders = $this->sliderRepository->getTrashedPaginated(10);
       return view('dashboard.pages.sliders.trashed', compact('sliders'));
    }
 
@@ -193,15 +210,22 @@ class SliderController extends Controller
     */
    public function restore($id)
    {
-      $result = $this->sliderRepository->restore($id);
+      $slider = $this->sliderRepository->findTrashedById((int) $id);
       
-      if ($result) {
-         return redirect()->route('dashboard.sliders.index')
-               ->with('success', 'تم استعادة الصورة بنجاح');
+      if (!$slider) {
+         return redirect()->route('dashboard.sliders.trashed')
+               ->with('error', 'السلايدر غير موجود في سلة المحذوفات');
       }
 
-      return redirect()->route('dashboard.sliders.index')
-         ->with('error', 'حدث خطأ أثناء استعادة الصورة');
+      $result = $this->sliderRepository->restore((int) $id);
+      
+      if ($result) {
+         return redirect()->route('dashboard.sliders.trashed')
+               ->with('success', 'تم استعادة السلايدر بنجاح');
+      }
+
+      return redirect()->route('dashboard.sliders.trashed')
+         ->with('error', 'حدث خطأ أثناء استعادة السلايدر');
    }
 
    /**
@@ -209,11 +233,11 @@ class SliderController extends Controller
     */
    public function forceDelete($id)
    {
-      $slider = $this->sliderRepository->findTrashedById($id);
+      $slider = $this->sliderRepository->findTrashedById((int) $id);
       
       if (!$slider) {
          return redirect()->route('dashboard.sliders.trashed')
-               ->with('error', 'الصورة غير موجودة');
+               ->with('error', 'السلايدر غير موجود في سلة المحذوفات');
       }
 
       // Delete image file if exists
@@ -221,15 +245,15 @@ class SliderController extends Controller
          $this->deleteImage(str_replace('/storage/', '', $slider->image));
       }
 
-      $result = $this->sliderRepository->forceDelete($id);
+      $result = $this->sliderRepository->forceDelete((int) $id);
       
       if ($result) {
          return redirect()->route('dashboard.sliders.trashed')
-               ->with('success', 'تم حذف الصورة نهائياً بنجاح');
+               ->with('success', 'تم حذف السلايدر نهائياً بنجاح');
       }
 
       return redirect()->route('dashboard.sliders.trashed')
-         ->with('error', 'حدث خطأ أثناء حذف الصورة نهائياً');
+         ->with('error', 'حدث خطأ أثناء حذف السلايدر نهائياً');
    }
 
 }
