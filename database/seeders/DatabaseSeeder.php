@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             RegionSeeder::class,
             CitySeeder::class,
+            SettingsSeeder::class,
             UserTypesSeeder::class,
             UsersSeeder::class,
             UserBusinessInfoSeeder::class,
