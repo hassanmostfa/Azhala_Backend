@@ -22,7 +22,7 @@ class UpdateSettingRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'phone_code' => 'required|string|max:10|regex:/^[0-9]+$/',
+            'phone_code' => 'required|string|max:3|regex:/^[0-9]+$/',
             'phone' => 'required|string|size:9|regex:/^5[0-9]{8}$/',
             'about' => 'required|string|max:1000',
             'whatsapp' => 'required|string|min:10|max:11|regex:/^[0-9]+$/',
@@ -50,7 +50,7 @@ class UpdateSettingRequest extends FormRequest
             
             'phone_code.required' => 'رمز الهاتف مطلوب',
             'phone_code.string' => 'رمز الهاتف يجب أن يكون نص',
-            'phone_code.max' => 'رمز الهاتف يجب أن لا يتجاوز 10 أحرف',
+            'phone_code.max' => 'رمز الهاتف يجب أن لا يتجاوز 3 أرقام',
             'phone_code.regex' => 'رمز الهاتف يجب أن يحتوي على أرقام فقط بدون رموز',
             
             'phone.required' => 'رقم الهاتف مطلوب',

@@ -10,7 +10,7 @@
 
 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
 
-                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">سلايدر</h1>
+                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">البنرات</h1>
 
 
     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
         </li>
 
 
-                                <li class="breadcrumb-item text-muted">سلايدر</li>
+                                                                 <li class="breadcrumb-item text-muted">بنر</li>
 
     </ul>
 
@@ -47,7 +47,7 @@
 
     <div class="card-toolbar">
         <div class="d-flex gap-2">
-            <a href="{{ route('dashboard.sliders.create') }}" class="btn btn-primary">إضافة سلايدر</a>
+                         <a href="{{ route('dashboard.sliders.create') }}" class="btn btn-primary">إضافة بنر</a>
             <a href="{{ route('dashboard.sliders.trashed') }}" class="btn btn-light-warning">
                 <i class="ki-duotone ki-trash fs-2">
                     <span class="path1"></span>
@@ -179,7 +179,7 @@
             
             Swal.fire({
                 title: 'هل أنت متأكد؟',
-                text: 'سيتم نقل السلايدر إلى سلة المحذوفات',
+                text: 'سيتم نقل البنر إلى سلة المحذوفات',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -196,21 +196,41 @@
 
         // Show success message if exists
         @if(session('success'))
-            Swal.fire({
-                title: 'تم بنجاح!',
-                text: '{{ session('success') }}',
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            
+            Toast.fire({
                 icon: 'success',
-                confirmButtonText: 'موافق'
+                title: '{{ session('success') }}'
             });
         @endif
 
         // Show error message if exists
         @if(session('error'))
-            Swal.fire({
-                title: 'خطأ!',
-                text: '{{ session('error') }}',
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            
+            Toast.fire({
                 icon: 'error',
-                confirmButtonText: 'موافق'
+                title: '{{ session('error') }}'
             });
         @endif
     });

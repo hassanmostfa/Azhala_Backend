@@ -1410,7 +1410,7 @@
                                     <span class="path4"></span>
                                 </i>
                             </span>
-                            <span class="menu-title">الاسلايدر</span>
+                            <span class="menu-title">البنرات</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
